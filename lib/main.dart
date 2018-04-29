@@ -1,6 +1,3 @@
-import 'package:filter_menu/filter_fab.dart';
-import 'package:filter_menu/task.dart';
-import 'package:filter_menu/task_row.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
@@ -13,248 +10,25 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(),
+      home: new MainPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
+class MainPage extends StatefulWidget {
+  MainPage({Key key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _MainPageState createState() => new _MainPageState();
 }
 
-List<Task> tasks = [
-  new Task(
-      name: "Catch up with Brian",
-      category: "Mobile Project",
-      time: "5pm",
-      color: Colors.orange,
-      finished: false),
-  new Task(
-      name: "Make new icons",
-      category: "Web App",
-      time: "3pm",
-      color: Colors.cyan,
-      finished: true),
-  new Task(
-      name: "Design explorations",
-      category: "Company Website",
-      time: "2pm",
-      color: Colors.pink,
-      finished: false),
-  new Task(
-      name: "Lunch with Mary",
-      category: "Grill House",
-      time: "12pm",
-      color: Colors.cyan,
-      finished: true),
-  new Task(
-      name: "Teem Meeting",
-      category: "Hangouts",
-      time: "10am",
-      color: Colors.cyan,
-      hangouts: [],
-      finished: true),
-];
-
-class _MyHomePageState extends State<MyHomePage>
-    with SingleTickerProviderStateMixin {
-  final double imageHeight = 280.0;
-  AnimationController animationController;
-  ValueNotifier<bool> shouldOnlyCompletedBeShownNotifier =
-      new ValueNotifier<bool>(false);
-
-  @override
-  void initState() {
-    super.initState();
-    animationController = new AnimationController(
-        vsync: this, duration: const Duration(seconds: 1));
-  }
-
-  @override
-  void dispose() {
-    animationController.dispose();
-    super.dispose();
-  }
-
+class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       body: new Stack(
-        children: <Widget>[
-          _buildTimeline(),
-          new ClipPath(
-            child: new Image.asset(
-              'images/birds.jpg',
-              fit: BoxFit.fitHeight,
-              height: imageHeight,
-              colorBlendMode: BlendMode.srcOver,
-              color: new Color(0x665A5F75),
-            ),
-            clipper: new LineClipper(),
-          ),
-          _buildTopBar(context),
-          _buildProfileRow(),
-          _buildFab(),
-          _buildContent(),
-        ],
+        children: <Widget>[],
       ),
     );
   }
-
-  Widget _buildContent() {
-    return new Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        _buildMyTasksHeader(),
-        _buildTasks(),
-      ],
-    );
-  }
-
-  Widget _buildTasks() {
-    return new Expanded(
-      child: new ListView(
-        children: tasks
-            .map((task) => new TaskRow(
-                  showCompletedNotifier: shouldOnlyCompletedBeShownNotifier,
-                  task: task,
-                  speedFactor: tasks.indexOf(task) / tasks.length,
-                ))
-            .toList(),
-        shrinkWrap: true,
-      ),
-    );
-  }
-
-  Widget _buildMyTasksHeader() {
-    return new Padding(
-      padding: new EdgeInsets.only(left: 64.0, top: imageHeight),
-      child: new Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          new Text(
-            'My Tasks',
-            style: new TextStyle(fontSize: 34.0),
-          ),
-          new Text(
-            'FEBRUARY 8, 2015',
-            style: new TextStyle(color: Colors.grey, fontSize: 12.0),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTopBar(BuildContext context) {
-    return new Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 32.0),
-      child: new Row(
-        children: <Widget>[
-          new Icon(
-            Icons.menu,
-            size: 32.0,
-            color: Colors.white,
-          ),
-          new Expanded(
-            child: new Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: new Text(
-                "Timeline",
-                style: new TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w300),
-              ),
-            ),
-          ),
-          new Icon(
-            Icons.linear_scale,
-            color: Colors.white,
-          ),
-        ],
-      ),
-    );
-  }
-
-//  _onFabTap() {
-//    scrollController.jumpTo(0.0);
-//    shouldOnlyCompletedBeShownNotifier.value =
-//        !shouldOnlyCompletedBeShownNotifier.value;
-//  }
-
-  Widget _buildFab() {
-    return new Positioned(
-      top: imageHeight - 100.0,
-      right: -40.0,
-      child: new FilterFab(
-          filterValueNotifier: shouldOnlyCompletedBeShownNotifier),
-    );
-  }
-
-  Widget _buildTimeline() {
-    return new Positioned(
-        top: 0.0,
-        bottom: 0.0,
-        left: 32.0,
-        child: new Container(
-          width: 1.0,
-          color: Colors.grey[300],
-        ));
-  }
-
-  Widget _buildProfileRow() {
-    return new Padding(
-      padding: new EdgeInsets.only(left: 16.0, top: imageHeight / 2.5),
-      child: new Row(
-        children: <Widget>[
-          new CircleAvatar(
-            minRadius: 28.0,
-            maxRadius: 28.0,
-            backgroundImage: new AssetImage('images/avatar.jpg'),
-          ),
-          new Padding(
-            padding: const EdgeInsets.only(left: 16.0),
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                new Text(
-                  'Ryan Barnes',
-                  style: new TextStyle(
-                      fontSize: 26.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400),
-                ),
-                new Text(
-                  'Product designer',
-                  style: new TextStyle(
-                      fontSize: 14.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w300),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class LineClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    Path path = new Path();
-    path.lineTo(0.0, size.height - 60.0);
-    path.lineTo(size.width, size.height);
-    path.lineTo(size.width, 0.0);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
