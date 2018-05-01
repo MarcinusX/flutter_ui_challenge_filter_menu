@@ -30,7 +30,10 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       body: new Stack(
-        children: <Widget>[_buildIamge()],
+        children: <Widget>[
+          _buildIamge(),
+          _buildTopHeader(),
+        ],
       ),
     );
   }
@@ -44,6 +47,30 @@ class _MainPageState extends State<MainPage> {
         height: _imageHeight,
         colorBlendMode: BlendMode.srcOver,
         color: new Color.fromARGB(120, 20, 10, 40),
+      ),
+    );
+  }
+
+  Widget _buildTopHeader() {
+    return new Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 32.0),
+      child: new Row(
+        children: <Widget>[
+          new Icon(Icons.menu, size: 32.0, color: Colors.white),
+          new Expanded(
+            child: new Padding(
+              padding: const EdgeInsets.only(left: 16.0),
+              child: new Text(
+                "Timeline",
+                style: new TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w300),
+              ),
+            ),
+          ),
+          new Icon(Icons.linear_scale, color: Colors.white),
+        ],
       ),
     );
   }
