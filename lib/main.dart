@@ -24,7 +24,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  double _imageHeight = 256.0;
+  final double _imageHeight = 256.0;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +34,7 @@ class _MainPageState extends State<MainPage> {
           _buildIamge(),
           _buildTopHeader(),
           _buildProfileRow(),
+          _buildBottomPart(),
         ],
       ),
     );
@@ -108,6 +109,43 @@ class _MainPageState extends State<MainPage> {
                 ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomPart() {
+    return new Padding(
+      padding: new EdgeInsets.only(top: _imageHeight),
+      child: new Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _buildMyTasksHeader(),
+          _buildTasksList(),
+        ],
+      ),
+    );
+  }
+
+  //TODO
+  Widget _buildTasksList() {
+    return new Container();
+  }
+
+  Widget _buildMyTasksHeader() {
+    return new Padding(
+      padding: new EdgeInsets.only(left: 64.0),
+      child: new Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          new Text(
+            'My Tasks',
+            style: new TextStyle(fontSize: 34.0),
+          ),
+          new Text(
+            'FEBRUARY 8, 2015',
+            style: new TextStyle(color: Colors.grey, fontSize: 12.0),
           ),
         ],
       ),
