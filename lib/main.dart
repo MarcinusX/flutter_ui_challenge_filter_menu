@@ -1,4 +1,6 @@
 import 'package:filter_menu/diagonal_clipper.dart';
+import 'package:filter_menu/task.dart';
+import 'package:filter_menu/task_row.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(new MyApp());
@@ -23,6 +25,39 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => new _MainPageState();
 }
 
+List<Task> tasks = [
+  new Task(
+      name: "Catch up with Brian",
+      category: "Mobile Project",
+      time: "5pm",
+      color: Colors.orange,
+      completed: false),
+  new Task(
+      name: "Make new icons",
+      category: "Web App",
+      time: "3pm",
+      color: Colors.cyan,
+      completed: true),
+  new Task(
+      name: "Design explorations",
+      category: "Company Website",
+      time: "2pm",
+      color: Colors.pink,
+      completed: false),
+  new Task(
+      name: "Lunch with Mary",
+      category: "Grill House",
+      time: "12pm",
+      color: Colors.cyan,
+      completed: true),
+  new Task(
+      name: "Teem Meeting",
+      category: "Hangouts",
+      time: "10am",
+      color: Colors.cyan,
+      completed: true),
+];
+
 class _MainPageState extends State<MainPage> {
   final double _imageHeight = 256.0;
 
@@ -31,6 +66,7 @@ class _MainPageState extends State<MainPage> {
     return new Scaffold(
       body: new Stack(
         children: <Widget>[
+          _buildTimeline(),
           _buildIamge(),
           _buildTopHeader(),
           _buildProfileRow(),
@@ -128,9 +164,12 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  //TODO
   Widget _buildTasksList() {
-    return new Container();
+    return new Expanded(
+      child: new ListView(
+        children: tasks.map((task) => new TaskRow(task: task)).toList(),
+      ),
+    );
   }
 
   Widget _buildMyTasksHeader() {
@@ -148,6 +187,18 @@ class _MainPageState extends State<MainPage> {
             style: new TextStyle(color: Colors.grey, fontSize: 12.0),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildTimeline() {
+    return new Positioned(
+      top: 0.0,
+      bottom: 0.0,
+      left: 32.0,
+      child: new Container(
+        width: 1.0,
+        color: Colors.grey[300],
       ),
     );
   }
