@@ -1,5 +1,6 @@
 import 'package:filter_menu/diagonal_clipper.dart';
-import 'package:filter_menu/task.dart';
+import 'package:filter_menu/initial_list.dart';
+import 'package:filter_menu/list_model.dart';
 import 'package:filter_menu/task_row.dart';
 import 'package:flutter/material.dart';
 
@@ -25,41 +26,18 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => new _MainPageState();
 }
 
-List<Task> tasks = [
-  new Task(
-      name: "Catch up with Brian",
-      category: "Mobile Project",
-      time: "5pm",
-      color: Colors.orange,
-      completed: false),
-  new Task(
-      name: "Make new icons",
-      category: "Web App",
-      time: "3pm",
-      color: Colors.cyan,
-      completed: true),
-  new Task(
-      name: "Design explorations",
-      category: "Company Website",
-      time: "2pm",
-      color: Colors.pink,
-      completed: false),
-  new Task(
-      name: "Lunch with Mary",
-      category: "Grill House",
-      time: "12pm",
-      color: Colors.cyan,
-      completed: true),
-  new Task(
-      name: "Teem Meeting",
-      category: "Hangouts",
-      time: "10am",
-      color: Colors.cyan,
-      completed: true),
-];
-
 class _MainPageState extends State<MainPage> {
+  final GlobalKey<AnimatedListState> _listKey =
+      new GlobalKey<AnimatedListState>();
   final double _imageHeight = 256.0;
+  ListModel listModel;
+  bool showOnlyCompleted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    listModel = new ListModel(_listKey, tasks);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,20 +49,47 @@ class _MainPageState extends State<MainPage> {
           _buildTopHeader(),
           _buildProfileRow(),
           _buildBottomPart(),
+          _buildFab(),
         ],
       ),
     );
   }
 
+  Widget _buildFab() {
+    return new Positioned(
+      top: _imageHeight - 36.0,
+      right: 16.0,
+      child: new FloatingActionButton(
+        onPressed: _changeFilterState,
+        backgroundColor: Colors.pink,
+        child: new Icon(Icons.filter_list),
+      ),
+    );
+  }
+
+  void _changeFilterState() {
+    showOnlyCompleted = !showOnlyCompleted;
+    tasks.where((task) => !task.completed).forEach((task) {
+      if (showOnlyCompleted) {
+        listModel.removeAt(listModel.indexOf(task));
+      } else {
+        listModel.insert(tasks.indexOf(task), task);
+      }
+    });
+  }
+
   Widget _buildIamge() {
-    return new ClipPath(
-      clipper: new DialogonalClipper(),
-      child: new Image.asset(
-        'images/birds.jpg',
-        fit: BoxFit.fitHeight,
-        height: _imageHeight,
-        colorBlendMode: BlendMode.srcOver,
-        color: new Color.fromARGB(120, 20, 10, 40),
+    return new Positioned.fill(
+      bottom: null,
+      child: new ClipPath(
+        clipper: new DialogonalClipper(),
+        child: new Image.asset(
+          'images/birds.jpg',
+          fit: BoxFit.fitHeight,
+          height: _imageHeight,
+          colorBlendMode: BlendMode.srcOver,
+          color: new Color.fromARGB(120, 20, 10, 40),
+        ),
       ),
     );
   }
@@ -166,8 +171,15 @@ class _MainPageState extends State<MainPage> {
 
   Widget _buildTasksList() {
     return new Expanded(
-      child: new ListView(
-        children: tasks.map((task) => new TaskRow(task: task)).toList(),
+      child: new AnimatedList(
+        initialItemCount: tasks.length,
+        key: _listKey,
+        itemBuilder: (context, index, animation) {
+          return new TaskRow(
+            task: listModel[index],
+            animation: animation,
+          );
+        },
       ),
     );
   }
