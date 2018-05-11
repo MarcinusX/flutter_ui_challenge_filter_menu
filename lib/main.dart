@@ -1,3 +1,4 @@
+import 'package:filter_menu/animated_fab.dart';
 import 'package:filter_menu/diagonal_clipper.dart';
 import 'package:filter_menu/initial_list.dart';
 import 'package:filter_menu/list_model.dart';
@@ -57,14 +58,11 @@ class _MainPageState extends State<MainPage> {
 
   Widget _buildFab() {
     return new Positioned(
-      top: _imageHeight - 36.0,
-      right: 16.0,
-      child: new FloatingActionButton(
-        onPressed: _changeFilterState,
-        backgroundColor: Colors.pink,
-        child: new Icon(Icons.filter_list),
-      ),
-    );
+        top: _imageHeight - 100.0,
+        right: -40.0,
+        child: new AnimatedFab(
+          onClick: _changeFilterState,
+        ));
   }
 
   void _changeFilterState() {
@@ -85,7 +83,7 @@ class _MainPageState extends State<MainPage> {
         clipper: new DialogonalClipper(),
         child: new Image.asset(
           'images/birds.jpg',
-          fit: BoxFit.fitHeight,
+          fit: BoxFit.cover,
           height: _imageHeight,
           colorBlendMode: BlendMode.srcOver,
           color: new Color.fromARGB(120, 20, 10, 40),
