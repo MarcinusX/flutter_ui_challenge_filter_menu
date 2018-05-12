@@ -1,8 +1,8 @@
-# filter_menu
+# Filter menu
 
-A new Flutter project.
+This is my first UI Challenge. I picked a design from Dribble and implemented it in Flutter.  
+Process of development got documented on my [blog](https://marcinszalek.pl/flutter/filter-menu-ui-challenge/).
 
-## Getting Started
+#Result
+On the left you can see the design, on the right my result.
 
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
