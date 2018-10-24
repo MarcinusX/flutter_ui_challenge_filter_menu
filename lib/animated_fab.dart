@@ -59,6 +59,9 @@ class _AnimatedFabState extends State<AnimatedFab>
   }
 
   Widget _buildOption(IconData icon, double angle) {
+    if (_animationController.isDismissed) {
+      return Container();
+    }
     double iconSize = 0.0;
     if (_animationController.value > 0.8) {
       iconSize = 26.0 * (_animationController.value - 0.8) * 5;
